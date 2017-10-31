@@ -4,7 +4,7 @@ Function library for calculation of band structure
 
 Created on Tue Oct 31 16:01:07 2017
 
-@author: RY
+@author: gitrymt
 """
 
 import numpy as np
