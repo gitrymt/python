@@ -40,23 +40,4 @@ def calcBand_1d(s=1, Nsite=2*10):
     return q, Eeven, Eodd
             
 if __name__ == '__main__':
-    import matplotlib.pyplot as plt
-    
-    q, Eeven, Eodd = calcBand_1d(s=5)
-    
-    # plot band structure
-    plt.hold(True)
-    plt.xlim(-1, 1)
-    plt.ylim(0, 30)
-    
-    plt.xlabel('$q$ ($d^{-1}$)')
-    plt.ylabel('Energy $\epsilon_q$ ($E_R$)')
-    ax = plt.gca()
-    ax.yaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, left=True, right=True)
-    ax.xaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, left=True, right=True)
-    ax.set_xticklabels(["$-\pi$","$-\pi/2$","0","$\pi/2$","$\pi$"])
-    ax.set_xticks(np.arange(-1, 1.5, 0.5))
-    
-    for i in range(0, 5):
-        plt.plot(q, Eeven[i, :], '-', linewidth=2)
-        plt.plot(q, Eodd[i, :], '--', linewidth=2)
+    print('')
