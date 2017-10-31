@@ -3,15 +3,13 @@
 Function library for calculation of band structure
 
 Created on Tue Oct 31 16:01:07 2017
-
 @author: gitrymt
 """
 
 import numpy as np
-import scipy as sp
 
 ### function: Band calculation - 1D optical lattice
-def calcBand_1d(s=1, Nsite=2*10):
+def calcBand_1d(s=1, Nsite=2*10, Nband=10):
     H = np.zeros([Nsite, Nsite])
     
     q = np.linspace(-1, 1, 500)
@@ -29,7 +27,6 @@ def calcBand_1d(s=1, Nsite=2*10):
         E0, P = np.linalg.eig(H)
         E[:][i_q] = np.sort(E0)
     
-    Nband = 10
     Eeven = np.zeros([Nband, q.size])
     Eodd = np.zeros([Nband, q.size])
     
