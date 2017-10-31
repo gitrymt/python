@@ -42,7 +42,7 @@ def calcBand_1d(s=1, Nsite=2*10):
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
     
-    q, Eeven, Eodd = calcBand_1d(s=20)
+    q, Eeven, Eodd = calcBand_1d(s=5)
     
     # plot band structure
     plt.hold(True)
