@@ -29,7 +29,7 @@ def calcBand_1d(s=1, Nsite=2*10):
         E0, P = np.linalg.eig(H)
         E[:][i_q] = np.sort(E0)
     
-    Nband = 5
+    Nband = 10
     Eeven = np.zeros([Nband, q.size])
     Eodd = np.zeros([Nband, q.size])
     

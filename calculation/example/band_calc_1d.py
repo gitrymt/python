@@ -14,7 +14,7 @@ sys.path.append('../func/')
 from func_band_calc import calcBand_1d
 
 # Lattice depth V_lat = s Er
-s = 12
+s = 5
 
 # Calculation
 q, Eeven, Eodd = calcBand_1d(s)
