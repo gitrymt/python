@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # import user library
-sys.path.append("../func")
+sys.path.append('../function')
 from func_band_calc import calcBand_1d
 
 # Initialization
@@ -21,17 +21,14 @@ dEmax = np.zeros([len(s_array), 6])
 
 # Calculation
 for i, s in enumerate(s_array):
-    q, Eeven, Eodd = calcBand_1d(s)
+    q, Energy = calcBand_1d(s)
     
-    Eodd = Eodd - np.min(Eeven[0, :])
-    Eeven = Eeven - np.min(Eeven[0, :])
+    dE = Energy - np.min(Energy[0, :])
     
-    for n in range(3):
-        dEmin[i, 2 * n] = np.min(Eeven[n, :])
-        dEmax[i, 2 * n] = np.max(Eeven[n, :])
-        dEmin[i, 2 * n + 1] = np.min(Eodd[n, :])
-        dEmax[i, 2 * n + 1] = np.max(Eodd[n, :])
-
+    for n in range(6):
+        dEmin[i, n] = np.min(dE[n, :])
+        dEmax[i, n] = np.max(dE[n, :])
+        
 # Plot result
 fig = plt.figure(figsize=(12, 8))
 plt.rcParams["font.size"] = 14
@@ -45,7 +42,6 @@ ax.yaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, lef
 ax.xaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, left=True, right=True)
 
 for n in range(6):
-    print(n)
     plt.fill_between(s_array,dEmin[:, n],dEmax[:, n],alpha=0.25)
     plt.plot(s_array, dEmin[:, n], 'k-', linewidth=2, alpha=0.5)
     plt.plot(s_array, dEmax[:, n], 'k-', linewidth=2, alpha=0.5)

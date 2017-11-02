@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # import user library
-sys.path.append("../func")
+sys.path.append('../function')
 from func_band_calc import calcBand_1d
 
 # Initialization
@@ -21,9 +21,9 @@ dEmax = np.zeros(len(s_array))
 
 # Calculation
 for i, s in enumerate(s_array):
-    q, Eeven, Eodd = calcBand_1d(s)
+    q, Energy = calcBand_1d(s)
     
-    dE = Eeven[1] - Eeven[0]
+    dE = Energy[2] - Energy[0]
     dEmin[i] = np.min(dE)
     dEmax[i] = np.max(dE)
 
