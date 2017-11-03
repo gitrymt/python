@@ -21,18 +21,18 @@ dEmax = np.zeros(len(s_array))
 
 # Calculation
 for i, s in enumerate(s_array):
-    q, Energy = calcBand_1d(s)
+    q, Energy = calcBand_1d(s, angle=np.pi * 120 / 180)
     
     dE = Energy[2] - Energy[0]
     dEmin[i] = np.min(dE)
     dEmax[i] = np.max(dE)
 
 # Sample parameters
-hbar = 1.06e-34
-mass = 87 * 1.66e-27
-lambda_lat = 1064e-9
-k_lat = 2 * np.pi / lambda_lat
-Er = (hbar * k_lat)**2 / (2 * mass)
+hbar = 1.054571726e-34 # J/Hz
+lambda_lat = 1064e-9 # m
+k_lat = 2 * np.pi / lambda_lat # m^-1
+mass = 86.909180520 * 1.660538782e-27 # kg
+Er = (hbar * k_lat)**2 / (2 * mass) # J
 
 # Result
 tau = 2 * np.pi * hbar / (dEmin * Er) * 1e6

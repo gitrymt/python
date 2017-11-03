@@ -9,7 +9,7 @@ Created on Tue Oct 31 16:01:07 2017
 import numpy as np
 
 ### function: Band calculation - 1D optical lattice
-def calcBand_1d(s=1, Nsite=2*10, Nband=10, Wannier_calc=False):
+def calcBand_1d(s=1, Nsite=2*10, Nband=10, Wannier_calc=False, angle=np.pi):
     H = np.zeros([Nsite, Nsite])
     
     q = np.linspace(-1, 1, 101)
@@ -17,6 +17,7 @@ def calcBand_1d(s=1, Nsite=2*10, Nband=10, Wannier_calc=False):
     temp = np.eye(Nsite-1)
     
     C = np.zeros([Nsite, q.size, Nsite])
+    G = 2 * np.sin(angle / 2)
     
     for i_q in range(q.size):
         H = np.zeros([Nsite, Nsite])
@@ -24,7 +25,7 @@ def calcBand_1d(s=1, Nsite=2*10, Nband=10, Wannier_calc=False):
         H[1:Nsite, 0:Nsite-1] += -s/4 * temp
         
         for i in range(Nsite):
-            H[i][i] = (2*(i-Nsite/2) + q[i_q])**2 + s/2
+            H[i][i] = G**2/4 * (2*(i-Nsite/2) + q[i_q])**2 + s/2
         
         E0, P = np.linalg.eig(H)
         rearrangedEvalsVecs = sorted(zip(E0, P.T), key=lambda x: x[0].real, reverse=False)

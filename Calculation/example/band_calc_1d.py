@@ -17,7 +17,7 @@ from func_band_calc import calcBand_1d
 s = 5
 
 # Calculation
-q, Energy = calcBand_1d(s)
+q, Energy = calcBand_1d(s, angle=np.pi * 120 / 180)
 
 # Plot calculation result
 fig = plt.figure(figsize=(4, 10))
