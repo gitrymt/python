@@ -34,14 +34,14 @@ def calcBand_1d(s=1, Nsite=2*10, Nband=10, Wannier_calc=False, angle=np.pi):
             E[i_q][i] = rearrangedEvalsVecs[i][0]
             P[:, i] = rearrangedEvalsVecs[i][1]
             
-        if Wannier_calc == True:
+        if Wannier_calc:
             for k in range(Nsite):
                 for l in range(Nsite):
                     C[k, i_q, l] = P[l, k]
     
     Energy = E.T
     
-    if Wannier_calc == True:
+    if Wannier_calc:
         x0 = 0
         x = np.linspace(-1, 1, 151)
         Wannier = np.zeros([len(x), Nsite], dtype=np.complex)
