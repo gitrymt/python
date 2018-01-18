@@ -14,7 +14,7 @@ sys.path.append('../function')
 from func_band_calc import calcBand_1d
 
 # Lattice depth V_lat = s Er
-s = 5
+s = 0
 
 # Calculation
 q, Energy = calcBand_1d(s, angle=np.pi * 120 / 180)
