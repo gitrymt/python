@@ -14,7 +14,7 @@ sys.path.append('../function')
 from func_band_calc import calcBand_1d
 
 # Lattice depth V_lat = s Er
-s = 20
+s = 17.1
 
 # Calculation
 q, Energy = calcBand_1d(s, angle=np.pi * 120 / 180)
@@ -24,7 +24,7 @@ fig = plt.figure(figsize=(6, 10))
 plt.rcParams["font.size"] = 14
 plt.hold(True)
 plt.xlim(-1, 1)
-plt.ylim(0, 15)
+plt.ylim(0, 40)
 
 plt.xlabel('$q$ ($d^{-1}$)')
 plt.ylabel('Energy $\epsilon_q$ ($E_R$)')
