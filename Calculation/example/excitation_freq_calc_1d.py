@@ -8,10 +8,14 @@ Created on Tue Feb 20 19:32:57 2018
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # import user library
 sys.path.append('../function')
 from func_band_calc import calcBand_1d
+import set_default_params
+
+set_default_params.plot_params()
 
 # Physical constants
 m =  86.909180520 * 1.660538921 * 1e-27 # Mass of 87 Rb (kg)
@@ -23,7 +27,7 @@ f_ex = []
 f_ex_max = []
 f_ex_min = []
 
-s_list = np.linspace(0, 50, 101)
+s_list = np.linspace(0, 75, 151)
 
 for s in s_list:
     # Lattice depth V_lat = s Er
@@ -83,3 +87,10 @@ plt.fill_between(s_list, f_ex_min * 1e-3, f_ex_max * 1e-3, alpha=0.5)
 plt.tight_layout()
 
 #print('Excitation frequecny ((1st band -> 3rd band))', f_ex*1e-3, 'kHz')
+
+df = pd.DataFrame({'Lattice depth (Er)': s_list,
+                     'Excitation freq. min (Hz)': f_ex_min,
+                     'Excitation freq. max (Hz)': f_ex_max,
+                     'Excitation freq. (Hz)': f_ex})
+    
+df.to_csv('./fex_1D.txt')
