@@ -23,7 +23,7 @@ h = 6.62606896 * 1e-34 # Prank constant (J/Hz)
 wavelength = 1064 * 1e-9 # Lattice wavelength (nm)
 Er = h**2 / (2 * m * wavelength**2)
 
-s_list = np.linspace(0, 15, 101)
+s_list = np.linspace(0, 60, 201)
 #dn = 25
 #
 #n_list = [(x, 0) for x in np.linspace(0, 1/2, int(dn * np.sqrt(3)))] # Gamma -> M
@@ -98,7 +98,7 @@ f_ex = np.reshape(f_ex, [-1,10])
 
 fig = plt.figure(dpi=150)
 plt.xlim(0, np.max(s_list))
-plt.ylim(0, 50)
+plt.ylim(0, 60)
 
 plt.xlabel('Lattice depth ($E_R$)')
 plt.ylabel('Excitation frequency $f_{ex}$ (kHz)')
