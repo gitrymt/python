@@ -12,6 +12,9 @@ import matplotlib.pyplot as plt
 # import user library
 sys.path.append('../function')
 from func_band_calc import calcBand_1d
+import set_default_params
+
+set_default_params.plot_params()
 
 # Initialization
 ds = 0.5
@@ -31,15 +34,10 @@ for i, s in enumerate(s_array):
         
 # Plot result
 fig = plt.figure(figsize=(12, 8))
-plt.rcParams["font.size"] = 14
-plt.hold(True)
 plt.xlim(0, max(s_array))
 plt.ylim(-2.5, 30)
 plt.xlabel('Lattice potential $V_{lat}$ ($E_R$)')
 plt.ylabel('Energy $\epsilon$ ($E_R$)')
-ax = plt.gca()
-ax.yaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, left=True, right=True)
-ax.xaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, left=True, right=True)
 
 for n in range(6):
     plt.fill_between(s_array,dEmin[:, n],dEmax[:, n],alpha=0.25)
