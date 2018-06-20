@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Function library for calculation of band structure
+Function library for band calculation
 
 Created on Tue Oct 31 16:01:07 2017
 @author: gitrymt
@@ -9,8 +9,31 @@ Created on Tue Oct 31 16:01:07 2017
 import numpy as np
 import time
 
-### function: Band calculation - 1D optical lattice
 def calcBand_1d(s=1, Nsite=2*10, Nband=10, Wannier_calc=False, angle=np.pi):
+    """
+    Band calculation - 1D optical lattice
+
+    Parameters
+    ----------
+    s : integer, optional
+        Lattice potential depth normalized by recoil energy Er
+        Here recoil energy Er is defined by hbar^2 k^2 / 2 m,
+            & Lattice depth V_0 = 4 x U_0
+    Nsite : integer, optional
+        Site number for calculation
+
+        For correct calculation, use even number
+        e.g.) 2*10, which is default value
+    Nband : integer, optional
+        No use (current)
+    Wannier_calc : bool, optional
+        If True, calculate the Wannier function
+    angle : float, optional
+        Relative angle between lattice beams
+        (the default is np.pi, which indicates that two lattice beams counter-propagate)
+    
+    """
+
     H = np.zeros([Nsite, Nsite])
     
     q = np.linspace(-1, 1, 101)
@@ -77,9 +100,28 @@ def calcBand_1d(s=1, Nsite=2*10, Nband=10, Wannier_calc=False, angle=np.pi):
     else:
         return q, Energy
 
-### function: Band calculation - Triangular optical lattice
 def calcBand_tri(s=1, m=6, Nband=10, nq_list=[], Wannier_calc=False):
-    # s: Lattice depth V_0 (V_0 = 4 U_0)
+    """
+    Band calculation - Triangular optical lattice
+
+    Parameters
+    ----------
+    s : integer, optional
+        Lattice potential depth normalized by recoil energy Er
+        Here recoil energy Er is defined by hbar^2 k^2 / 2 m,
+            & Lattice depth V_0 = 4 x U_0
+    m : integer, optional
+        Nsite = 2 * m + 1: Site number for calculation
+
+        default is 6
+    Nband : integer, optional
+        No use (current)
+    nq_list : list, optional
+        wavenumber list
+    Wannier_calc : bool, optional
+        If True, calculate the Wannier function
+    
+    """
 
     # Calculation
     Nsite = 2 * m + 1
