@@ -61,12 +61,14 @@ def calcBand_1d(s=1, Nsite=2*10, Nband=10, Wannier_calc=False, angle=np.pi):
     
     if Wannier_calc:
         start = time.time()
-        ltmp = (-(Nsite-1)/2 - 1 + np.array(range(Nsite)))
+        ltmp = (-(Nsite-1)/2 + np.array(range(Nsite)))
+        print(ltmp)
         
         x0 = 0
-        x = np.linspace(-1, 1, 151)
-        Wannier = np.zeros([len(x), Nsite], dtype=np.complex)
-        u_q = np.zeros([len(q), len(x), Nsite], dtype=np.complex)
+        x = np.linspace(-1, 1, 301)
+#        x = np.linspace(-1, 1, 151)
+        Wannier = np.zeros([len(x), Nsite], dtype=np.complex) # Wannier functions
+        u_q = np.zeros([len(q), len(x), Nsite], dtype=np.complex) # 
         phi = np.zeros([len(q), len(x), Nsite], dtype=np.complex)
         
         for i_q, q_i in enumerate(q):
@@ -93,8 +95,8 @@ def calcBand_1d(s=1, Nsite=2*10, Nband=10, Wannier_calc=False, angle=np.pi):
             norm_Wannier = (x[1] - x[0]) * np.sum(np.abs(Wannier[:, i])**2)
             Wannier[:, i] = Wannier[:, i] / np.sqrt(norm_Wannier)
             
-            if i % 2 == 1:
-                Wannier[:, i] = np.append(Wannier[int(len(x)/2):, i], Wannier[0:int(len(x)/2), i])
+#            if i % 2 == 1:
+#                Wannier[:, i] = np.append(Wannier[int(len(x)/2):, i], Wannier[0:int(len(x)/2), i])
         
         return q, Energy, x, Wannier, C
     else:

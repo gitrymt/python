@@ -20,19 +20,19 @@ set_default_params.plot_params()
 # Physical constants
 m =  86.909180520 * 1.660538921 * 1e-27 # Mass of 87 Rb (kg)
 h = 6.62606896 * 1e-34 # Prank constant (J/Hz)
-wavelength = 1064 * 1e-9 # Lattice wavelength (nm)
+wavelength = 810 * 1e-9 # Lattice wavelength (nm)
 Er = h**2 / (2 * m * wavelength**2)
 
 f_ex = []
 f_ex_max = []
 f_ex_min = []
 
-s_list = np.linspace(0, 75, 151)
+s_list = np.linspace(0, 1500, 251)
 
 for s in s_list:
     # Lattice depth V_lat = s Er
     # Calculation
-    q, Energy = calcBand_1d(s, angle=np.pi * 120 / 180)
+    q, Energy = calcBand_1d(s, angle=np.pi * 2 * 9.21 / 180)
     
     # Plot calculation result
     if False:
@@ -69,8 +69,8 @@ for s in s_list:
 
 fig = plt.figure(dpi=150)
 plt.rcParams["font.size"] = 12
-plt.xlim(0, np.max(s_list))
-plt.ylim(0, 50)
+#plt.xlim(0, np.max(s_list))
+#plt.ylim(0, 50)
 
 plt.xlabel('Lattice depth ($E_R$)')
 plt.ylabel('Excitation frequency $f_{ex}$ (kHz)')
@@ -79,7 +79,8 @@ ax.yaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, lef
 ax.xaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, left=True, right=True)
 #ax.set_title('Lattice depth $V_{lat} = $ ' + str('%.1f' % s) + ' $E_R$')
 plt.grid(lw=0.5, ls='--')
-plt.fill_between(s_list, f_ex_min * 1e-3, f_ex_max * 1e-3, alpha=0.5)
+plt.fill_between(s_list * Er / 1.38e-23 * 1e6, f_ex_min * 1e-3, f_ex_max * 1e-3, alpha=0.5)
+plt.plot(s_list * Er / 1.38e-23 * 1e6, f_ex*1e-3, '-', linewidth=1)
 #plt.plot(s_list, f_ex*1e-3, '-', linewidth=2)
 #plt.plot(s_list, f_ex_max*1e-3, '-', linewidth=2)
 #plt.plot(s_list, f_ex_min*1e-3, '-', linewidth=2)
