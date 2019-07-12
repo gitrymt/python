@@ -38,18 +38,22 @@ def calcBand_1d(s=1, Nsite=2*10, Nband=10, Wannier_calc=False, angle=np.pi):
     
     q = np.linspace(-1, 1, 101)
     E = np.zeros([q.size, Nsite])
-    temp = np.eye(Nsite-1)
-    
+    tmp = np.eye(Nsite-1)
+    Htmp = np.zeros([Nsite, Nsite])
+    Htmp[0:Nsite-1, 1:Nsite] += -s/4 * tmp
+    Htmp[1:Nsite, 0:Nsite-1] += -s/4 * tmp
+
     C = np.zeros([Nsite, q.size, Nsite])
-    G = 2 * np.sin(angle / 2)
+    G = np.sin(angle / 2)
     
     for i_q in range(q.size):
-        H = np.zeros([Nsite, Nsite])
-        H[0:Nsite-1, 1:Nsite] += -s/4 * temp
-        H[1:Nsite, 0:Nsite-1] += -s/4 * temp
-        
+        # H = np.zeros([Nsite, Nsite])
+        H = np.copy(Htmp)
+        # H[0:Nsite-1, 1:Nsite] += -s/4 * temp
+        # H[1:Nsite, 0:Nsite-1] += -s/4 * temp
+
         for i in range(Nsite):
-            H[i][i] = G**2/4 * (2*(i-Nsite/2) + q[i_q])**2 + s/2
+            H[i][i] = G**2 * (2*(i-Nsite/2) + q[i_q])**2 + s/2
         
         E0, P = np.linalg.eig(H)
         rearrangedEvalsVecs = sorted(zip(E0, P.T), key=lambda x: x[0].real, reverse=False)
@@ -144,29 +148,31 @@ def calcBand_tri(s=1, m=6, Nband=10, nq_list=[], Wannier_calc=False):
     C = np.zeros([Nsite**2, len(nq_list), Nsite**2])
     H_tmp = np.zeros([Nsite**2, Nsite**2])
     
-    l1 = np.zeros([Nsite**2, Nsite**2])
-    m1 = np.zeros([Nsite**2, Nsite**2])
-    l2 = np.zeros([Nsite**2, Nsite**2])
-    m2 = np.zeros([Nsite**2, Nsite**2])
+    # start = time.time()
+
+    l_list_1 = np.array(l_list)[:, 0]
+    l_list_2 = np.array(l_list)[:, 1]
+    l2, l1 = np.meshgrid(l_list_1, l_list_1)
+    m2, m1 = np.meshgrid(l_list_2, l_list_2)
     
-#    start = time.time()
-    
-    for i_1, ls_1 in enumerate(l_list):
-        for i_2, ls_2 in enumerate(l_list):
-            l1[i_1][i_2] = ls_1[0]; m1[i_1][i_2] = ls_1[1]
-            l2[i_1][i_2] = ls_2[0]; m2[i_1][i_2] = ls_2[1]
-            
-            l_diff = np.array(ls_1) - np.array(ls_2)
-            
-            condition_1 = (int(np.abs(ls_1[0] - ls_2[0])) == 1) and (ls_1[1] == ls_2[1])
-            condition_2 = (ls_1[0] == ls_2[0]) and (int(np.abs(ls_1[1] - ls_2[1])) == 1)
-            condition_3 = ((l_diff[0] == 1) and (l_diff[1] == 1)) or ((l_diff[0] == -1) and (l_diff[1] == -1))
-            if condition_1 or condition_2 or condition_3:
-                H_tmp[i_1][i_2] = - s / 4
-            
+    l_diffs_1 = l1 - l2
+    l_diffs_2 = m1 - m2
+    l_diffs = l_diffs_1 * l_diffs_2
+    condition_1 = (np.abs(l_diffs_1) == 1) * (m1 == m2)
+    condition_2 = (l1 == l2) * (np.abs(l_diffs_2) == 1)
+    condition_3 = (l_diffs == 1)
+
+    H_tmp[condition_1 == 1] = -s/4
+    H_tmp[condition_2 == 1] += -s/4
+    H_tmp[condition_3 == 1] += -s/4
+
+    # elapsed_time = time.time() - start
+    # print ("elapsed_time: {0}".format(elapsed_time) + "[sec]")
+
+    # start = time.time()
+
     for i_n, n in enumerate(nq_list):
-        H = np.zeros([Nsite**2, Nsite**2])
-        H += H_tmp
+        H = np.copy(H_tmp)
         
         K = 3 * ((n[0] + l1)**2 + (n[1] + m1)**2 - (n[0] + l2) * (n[1] + m2)) - 3 * s / 4
     #    H += ((np.abs(l1 - l2) < 1) * (np.abs(m1 - m2) < 1)) * K
@@ -174,13 +180,14 @@ def calcBand_tri(s=1, m=6, Nband=10, nq_list=[], Wannier_calc=False):
         
         E0, P = np.linalg.eig(H)
         rearrangedEvalsVecs = sorted(zip(E0, P.T), key=lambda x: x[0].real, reverse=False)
-        
+
         E[i_n, :], tmp = map(list, zip(*rearrangedEvalsVecs))
         C[:, i_n, :] = np.array(tmp)
 
+    # elapsed_time = time.time() - start
+    # print ("elapsed_time: {0}".format(elapsed_time) + "[sec]")
+
     return E, C
-#    elapsed_time = time.time() - start
-#    print ("elapsed_time:{0}".format(elapsed_time) + "[sec]")
 
 
 if __name__ == '__main__':
