@@ -162,9 +162,9 @@ def calcBand_tri(s=1, m=6, Nband=10, nq_list=[], Wannier_calc=False):
     condition_2 = (l1 == l2) * (np.abs(l_diffs_2) == 1)
     condition_3 = (l_diffs == 1)
 
-    H_tmp[condition_1 == 1] = -s/4
-    H_tmp[condition_2 == 1] += -s/4
-    H_tmp[condition_3 == 1] += -s/4
+    H_tmp[condition_1 == 1] = -s/8
+    H_tmp[condition_2 == 1] += -s/8
+    H_tmp[condition_3 == 1] += -s/8
 
     # elapsed_time = time.time() - start
     # print ("elapsed_time: {0}".format(elapsed_time) + "[sec]")
@@ -174,7 +174,7 @@ def calcBand_tri(s=1, m=6, Nband=10, nq_list=[], Wannier_calc=False):
     for i_n, n in enumerate(nq_list):
         H = np.copy(H_tmp)
         
-        K = 3 * ((n[0] + l1)**2 + (n[1] + m1)**2 - (n[0] + l2) * (n[1] + m2)) - 3 * s / 4
+        K = 3 * ((n[0] + l1)**2 + (n[1] + m1)**2 - (n[0] + l2) * (n[1] + m2)) - 3 * s / 8
     #    H += ((np.abs(l1 - l2) < 1) * (np.abs(m1 - m2) < 1)) * K
         H += ((l1 == l2) * (m1 == m2)) * K
         

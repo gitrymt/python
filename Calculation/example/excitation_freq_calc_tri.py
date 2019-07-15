@@ -26,8 +26,8 @@ Er = constants.h**2 / (2 * mass * wavelength**2)
 
 s_max = 2500
 # s_list = np.linspace(1500, s_max, s_max-1500+1)
-s_list = np.linspace(0, s_max, s_max+1)/2
-# s_list = np.linspace(0, s_max, 21)/2
+# s_list = np.linspace(0, s_max, s_max+1)
+s_list = np.linspace(0, s_max, 21)
 
 n_list = [(0, 0)]
 dE = np.array([])
@@ -51,7 +51,7 @@ for i_s, s in tqdm(enumerate(s_list)):    # Lattice depth V_lat = s Er
 
 f_ex = np.reshape(f_ex, [-1,10])
 
-s_list = s_list * 2
+# s_list = s_list
 omega_harm = Er * 3 / 2 * np.sqrt(s_list) / constants.hbar
 f_harm = 2 * omega_harm / (2 * np.pi)
 
@@ -82,8 +82,8 @@ if True:
     plt.xlim(0, np.max(s_list_temp))
     plt.ylim(0, 300)
 
-    plt.xlabel('Lattice depth ($\mu$K)')
-    plt.ylabel('$E_n - E_0$/h (kHz)')
+    plt.xlabel(r'Lattice depth ($\mu$K)')
+    plt.ylabel(r'$E_n - E_0$/h (kHz)')
     ax = plt.gca()
     ax.yaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, left=True, right=True)
     ax.xaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, left=True, right=True)

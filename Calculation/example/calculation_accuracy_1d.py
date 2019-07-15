@@ -16,7 +16,7 @@ import time
 
 # import user library
 sys.path.append('../function')
-from func_band_calc import calcBand_tri
+from func_band_calc import calcBand_1d
 import set_default_params
 
 set_default_params.plot_params()
@@ -31,45 +31,53 @@ dE = np.array([])
 
 f_ex = [()]
 
-s = 2000
-m_max = 20
-m_min = 1
-m_list = np.array(np.linspace(m_min, m_max, m_max-m_min+1), dtype=np.int)
+s = 5
+m_max = 600
+m_min = 500
+m_list = np.array(np.linspace(m_min, m_max, (m_max-m_min)/10+1), dtype=np.int)
 
 # m_list = np.array(np.linspace(5, 12, 12-5+1), dtype=np.int)
 # m_list = np.array([20], dtype=np.int)
 
 Nsite_min = 2 * np.min(m_list) + 1
+angle_lat = np.pi
 
 elapsed_times = []
+elapsed_times_std = []
+N_loop = 2
 
 for m_tmp in tqdm(m_list):
 # for m_tmp in m_list:
-    start = time.time()
+    elapsed_time_tmp = np.zeros(N_loop)
 
-    # Calculation
-    Nsite = 2 * m_tmp + 1
+    for ite in range(N_loop):
+        start = time.time()
 
-    # E = np.zeros([len(n_list), Nsite**2])
-    l_list = [(x, y) for x in np.linspace(-m_tmp, m_tmp, Nsite) for y in np.linspace(-m_tmp, m_tmp, Nsite)]
-    
-    E, Ctmp = calcBand_tri(s=s, m=m_tmp, Nband=10, nq_list=n_list, Wannier_calc=False)
-    dE_tmp = (E - E[0, 0]) * Er / constants.h * 1e-3
-    # dE_tmp = (E - E[0, 0])
-    # dE_tmp = (E) * Er / constants.h
-    
-    f_ex = np.append(f_ex, np.array(dE_tmp[0][1:Nsite_min**2-1]))
-    # print(f_ex.shape)
+        # Calculation
+        Nsite = 2 * m_tmp + 1
 
-    elapsed_times = np.append(elapsed_times, time.time() - start)
+        # E = np.zeros([len(n_list), Nsite**2])
+        l_list = [(x, y) for x in np.linspace(-m_tmp, m_tmp, Nsite) for y in np.linspace(-m_tmp, m_tmp, Nsite)]
+        
+        E, Ctmp = calcBand_1d(s, Nsite=2*20, angle=angle_lat)
+        # dE_tmp = (E - E[0, 0]) * Er / constants.h * 1e-3
+        # dE_tmp = (E - E[0, 0])
+        # dE_tmp = (E) * Er / constants.h
+        
+        # f_ex = np.append(f_ex, np.array(dE_tmp[0][1:Nsite_min**2-1]))
+        # print(f_ex.shape)
+        elapsed_time_tmp[ite] += time.time() - start
 
-f_ex = np.reshape(f_ex, [-1,Nsite_min**2-2])
+    elapsed_times = np.append(elapsed_times, np.mean(elapsed_time_tmp))
+    elapsed_times_std = np.append(elapsed_times_std, np.std(elapsed_time_tmp, ddof=1))
+
+# f_ex = np.reshape(f_ex, [-1,Nsite_min**2-2])
 
 # print(len(m_list), f_ex.shape)
 
 Nsite_list = 2 * m_list + 1
 
-if True:
+if False:
     fig = plt.figure()
     # plt.xlim(25, np.max(Nsite_list))
     # plt.ylim(0, 300)
@@ -89,6 +97,12 @@ if True:
     plt.show()
 
 if True:
+    df_calc_read =pd.read_csv('./calc_time_1d_tmp.txt', sep='\t')
+    # print(df_calc_read)
+    Nsite_read = df_calc_read['Nsite']
+    elapsed_time_read = df_calc_read['Calc. time (s)']
+    elapsed_time_read_std = df_calc_read['Std. of calc. time (s)']
+
     fig = plt.figure()
     # plt.xlim(25, np.max(Nsite_list))
     # plt.ylim(0, 300)
@@ -99,11 +113,23 @@ if True:
     ax.yaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, left=True, right=True)
     ax.xaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, left=True, right=True)
     plt.grid(lw=0.5, ls='--')
-    plt.semilogy(Nsite_list, elapsed_times, 'o--')
     # plt.legend()
+    # ax.set_xscale("log", nonposx='clip')
+    ax.set_yscale("log", nonposy='clip')
+
+    plt.errorbar(Nsite_read, elapsed_time_read, yerr=elapsed_time_read_std, fmt='x--', mec='#0000ff', mfc='#aaaaff', c='#aaaaff')
+    plt.errorbar(Nsite_list, elapsed_times, yerr=elapsed_times_std, fmt='o--', mec='#ff0000', mfc='#ffaaaa', c='#ffaaaa')
+    # plt.errorbar(x, y, xerr=0.1*x, yerr=5.0 + 0.75*y)
+    # ax.set_ylim(ymin=0.1)
 
     plt.tight_layout()
     plt.show()
+
+    df_calc = pd.DataFrame({'Nsite': Nsite_list,
+                            'Calc. time (s)': elapsed_times,
+                            'Std. of calc. time (s)': elapsed_times_std})
+
+    df_calc.to_csv('./calc_time_1d.txt', sep='\t')
 
 
 # df = pd.DataFrame({'Lattice depth (Er)': s_list,

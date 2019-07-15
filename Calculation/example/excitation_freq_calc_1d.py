@@ -57,14 +57,14 @@ for s in tqdm(s_list):
         plt.xlim(-1, 1)
         plt.ylim(0, 40)
         
-        plt.xlabel('$q$ ($d^{-1}$)')
-        plt.ylabel('Energy $\epsilon_q$ ($E_R$)')
+        plt.xlabel(r'$q$ ($d^{-1}$)')
+        plt.ylabel(r'Energy $\epsilon_q$ ($E_R$)')
         ax = plt.gca()
         ax.yaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, left=True, right=True)
         ax.xaxis.set_tick_params(which='both', direction='in',bottom=True, top=True, left=True, right=True)
-        ax.set_xticklabels(["$-\pi$","$-\pi/2$","0","$\pi/2$","$\pi$"])
+        ax.set_xticklabels([r"$-\pi$",r"$-\pi/2$","0",r"$\pi/2$",r"$\pi$"])
         ax.set_xticks(np.arange(-1, 1.5, 0.5))
-        ax.set_title('Lattice depth $V_{lat} = $ ' + str('%.1f' % s) + ' $E_R$')
+        ax.set_title(r'Lattice depth $V_{lat} = $ ' + str('%.1f' % s) + r' $E_R$')
         for i in range(0, 5):
             plt.plot(q, Energy[2*i, :], '-', linewidth=2)
             plt.plot(q, Energy[2*i+1, :], '--', linewidth=2)
