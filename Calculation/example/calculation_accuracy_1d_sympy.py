@@ -65,13 +65,36 @@ for i in range(Nsite):
 H2 += tmp0 + 1/2 * sp.eye(Nsite)
 # H2 += Vs/2 * sp.eye(Nsite)
 
+q_array = np.linspace(-1, 1, 11)
+x = sp.symbols('x')
+
+
+#import numpy 
+#a = numpy.arange(100) 
+#expr = sin(x)**2 + cos(x)**3
+#display(expr)
+#f = lambdify(x, expr, "numpy") # numpyを使わないと遅い
+#f(a)
+
+eqH2_array = sp.lambdify(q, H2)
+print(q_array)
+print(eqH2_array(np.array([1, 2])))
+
+for eqH2 in eqH2_array(q_array):
+    start = time.time()
+    print(eqH2.shape)
+#    E0, P = np.linalg.eig(eqH2)
+#    rearrangedEvalsVecs = sorted(zip(E0, P.T), key=lambda x: x[0].real, reverse=False)
+#    E = eqH2.eigenvals()
+    elapsed_time = time.time() - start
+
+    print(elapsed_time)
 # print(tmp0)
         # for i in range(Nsite):
         #     H[i][i] = G**2 * (2*(i-Nsite/2) + q[i_q])**2 + s/2
 
-A = sp.Matrix(([3, 2], [-2, 3]))
 print(H2)
-print(H2.eigenvals())
+#print(H2.eigenvals())
 
 # for m_tmp in tqdm(m_list):
 # # for m_tmp in m_list:
