@@ -93,4 +93,4 @@ U0 = 4 * I0
 
 alpha = (dE1 - dE2) / dE1
 print('Differential light shift: %f kHz' %(250/4 * 1e-6 * constants.k / constants.h * alpha * 1e-3))
-print((dE1 - dE2)*U0 / constants.h * 1e-6)
+print((dE1 - dE2)*U0 / constants.h * 1e-3)
